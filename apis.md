@@ -1,0 +1,402 @@
+## Authentication
+### sign up
+- description
+  - create a new user using the given information in the request body
+- route
+    - /api/signup
+- http method
+    - POST
+    - body
+        - firstName: string, required
+        - lastName: string, required
+        - email: string, required
+        - password: string, length >= 6, required
+        - accessCode: string, required
+        - role: string, value set = {student, teacher}
+- response
+    - uid: string
+    - idToken: string
+### log in
+- description
+    - logs the user with the given email and password in    
+- route
+    - /api/login
+- http method
+    - POST
+    - body
+        - email: string, required
+        - password: string, length >= 6, required
+- response
+    - uid: string
+    - idToken: string
+    - role: string
+### log out
+- description
+  - logs the user out
+- route
+    - /api/logout
+- http method
+    - post
+    - body
+        - N/A
+- response
+    - N/A
+## User Profile
+### get student profile
+- description
+  - retrieve all the profile information of the student with the given id
+- route
+    - /api/profilestudent
+- http method
+    - GET
+    - headers
+        - uid: string, required
+- response
+    - sid: string
+    - firstName: string
+    - lastName: string
+    - grade: string
+    - avatarURL: string
+    - class: object
+    - bestFriend: string
+    - badges: [string]
+    - loveActivity: string
+### get teacher profile
+- description
+    - retrieve all the profile information of the teacher with the given id
+- route
+    - /api/profileteacher
+- http method
+    - GET
+    - headers
+        - uid: string, required
+- response
+    - tid: string
+    - firstName: string
+    - lastName: string
+    - email: string
+    - avatarURL: string
+    - school: [string]
+    - schoolClass: [string]
+    - feedbacks: [string]
+    - announcements: [string]
+### edit student profile
+- description
+  - update the information of the student with the given id with the new ones provided
+- route
+    - /api/studentprofileedit
+- http method
+    - POST
+    - body
+        - sid: string, required
+        - firstName: string, required
+        - lastName: string, required
+        - avatarURL: string, required
+        - schoolClass: string, required
+        - loveActivity: string, required
+        - bestFriend: string, required
+- response
+    - sid: string
+### edit student avatarURL
+- description
+    - update the avatar of the student with the given id and file
+- route
+    - /api/studentprofileedit/editAvatarURL
+- http method
+    - POST
+    - headers
+        - sid: string, required
+    - file
+        - file: file, required
+- response
+    - sid: string
+    - avatarURL: string
+### edit teacher profile
+- description
+  - update the information of the teacher with the given id with the new ones provided
+- route
+    - /api/teacherprofileedit
+- http method
+    - POST
+    - body
+        - tid: string, required
+        - firstName: string, required
+        - lastName: string, required
+        - avatarURL: string, required
+        - school: string, required
+        - schoolClass: string, required
+- response
+    - sid: string
+
+### edit teacher avatarURL
+- description
+    - update the avatar of the teacher with the given id and file
+- route
+    - /api/teacherprofileedit/editAvatarURL
+- http method
+    - POST
+  - headers
+      - tid: string, required
+  - file
+      - file: file, required
+- response
+    - tid: string
+    - avatarURL: string
+
+### change account password
+- description
+  - update the password for existing account (both student and teacher)
+- route
+  - /api/profile/edit/password
+- http method
+  - POST
+  - body
+    - uid: the uid of the account holder
+    - password: the new password for the account
+- response
+  - message: string, informing the status of the operation
+
+## Class Management
+### creat class
+- description
+  - create a new class using the give information in the request body
+- route
+    - /api/createClass
+- http method
+    - POST
+    - body
+        - name: string, required
+        - school: string, required
+        - grade: string, required
+        - accessToken: string, required
+        - teacher: string, required
+- response
+    - cid: string
+### edit class
+- description
+  - update the information of the class with the given id with the new ones provided
+- route
+    - /api/editClass
+- http method
+    - POST
+    - body
+        - cid: string, required
+        - name: string, required
+        - school: string, required
+        - grade: string, required
+        - description: string, required
+        - teacher: string, required
+- response
+    - cid: string
+### delete class
+- description
+  - delete the class with the given id
+- route
+    - /api/deleteClass
+- http method
+    - POST
+    - body
+        - cid: string, required
+        - teacher: string, required
+- response
+    - cid: string
+### apply a class
+- description
+    - apply a class with the given accessToken
+- route
+    - /api/joinClass
+- http method
+    - POST
+    - body
+        - sid: string, required
+        - accessToken: string, required
+- response
+    - sid: string
+### get class list
+- description
+  - retrieve all the classes the given teacher is responsible for
+- route
+  - /api/classes
+- http method
+  - GET
+  - headers
+    - uid: string, required
+- query params
+  - sorted
+    - asc: 
+      - sort classes in ascending order
+    - desc:
+      - sort classes in descending order
+  - by
+    - name: 
+      - sort classes by their names
+    - school: 
+      - sort classes by their schools
+    - grade: 
+      - sort classes by their grades
+- response
+  - classes:
+    - a list of classes as required
+  - message: 
+    - a message about the operation done on the data
+### get class information
+- description
+  - retrieve the detailed information for a class
+- route
+  - /api/classes/detail
+- http method
+  - GET
+  - headers
+    - cid: string, required
+- response:
+  - the class object as required
+### get students
+- description
+  - get all students of a class with the id provided
+- route
+  - /api/classes/students
+- http method
+  - GET
+  - headers
+    - cid: string, required
+- response
+  - a list of student objects (for object schema, please refer to [Student class](./models/Student.js))
+### get applications
+- description
+  - get all class joining applications for a teacher
+- route
+  - /api/classes/applications
+- http method
+  - GET
+  - headers
+    - uid: string, required
+- query param
+  - status
+    - all
+      - get all applications
+    - pending
+      - get pending applications
+    - accept
+      - get accepted applications
+    - reject
+      - get rejected applications
+- response
+  - a list of application objects (for object schema, please refer to [Application class](./models/Application.js))
+### approve application
+- description
+  - approve a class joining application
+- route
+  - /api/class/admin/accept
+- http method
+  - POST
+  - body
+    - aids: array of strings, required
+- response:
+  - processedItems: array of strings
+### reject application a class joining application
+- description
+  - reject a class joining application
+- route
+  - /api/class/admin/reject
+- http method
+  - POST
+  - body
+    - aids: array of strings, required
+- response:
+  - processedItems: array of strings
+### remove students from a class
+- description
+  - remove the student with the given id from the class with the given id
+- route
+  - /api/class/admin/remove
+- http method
+  - POST
+  - body
+    - uid: string, required
+    - cid: string, required
+- response:
+  - uid: string
+  - cid: string
+## Activity management
+### edit answer of activity
+- description
+    - student edits or adds answer of an activity
+- route
+    - /api/editAnswer/edit
+- http method
+    - POST
+    - body
+      - sid: string, required
+      - tid: string
+      - answer: string, required
+      - page: string, required
+- response
+    - fid: string
+### edit feedback of activity
+- description
+    - teacher edits or adds feedback of an activity
+    - auto create notification for students
+- route
+    - /api/editFeedback
+- http method
+    - POST
+    - body
+        - sid: string, required
+        - tid: string, required
+        - feedback: string, required
+        - page: string, required
+- response
+    - fid: string
+### get answer and feedback of activity
+- description
+    - student or teacher gets the answer and feedbacks of the activity
+- route
+    - /api/editAnswer
+- http method
+    - GET
+    - headers
+        - uid: string, required
+        - page: string, required
+- response
+    - fid: string
+## Notication management
+### get notification
+- description
+  - get all the notifications for a student
+- route
+  - /api/getNotification
+- http method
+  - GET
+  - headers
+      - uid: string, required
+- response
+  - notifications: array of strings including page number
+## Access Code
+### generate access code
+- description
+  - generate the access code which will be used in account registration
+- route
+  - /api/access-code
+- http method
+  - GET
+- response
+  - plain text, the newly generated access code
+## Auto script to help prepare test data
+### create student accounts
+- description
+  - generate student accounts using the information in the code
+- route
+    - /api/scripts/create-accounts/student
+- http method
+    - GET
+- response
+    - N/A
+### create teacher accounts
+- description
+    - generate teacher accounts using the information in the code
+- route
+    - /api/scripts/create-accounts/teacher
+- http method
+    - GET
+- response
+    - N/A

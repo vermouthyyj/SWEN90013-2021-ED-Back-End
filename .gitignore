@@ -1,0 +1,5 @@
+.idea
+node_modules
+.vscode
+# firebase service account private key file
+educationdesign-5bce6-firebase-adminsdk-8qkqn-9823385235.json
