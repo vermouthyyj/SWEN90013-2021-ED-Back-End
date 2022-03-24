@@ -2,13 +2,13 @@ const client = require("firebase");
 const admin = require("firebase-admin");
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyBMSTckmWf8NmZ1Z_FHwzIoZG6oiSoURoo",
-    authDomain: "think-plus-5cc5c.firebaseapp.com",
-    projectId: "think-plus-5cc5c",
-    storageBucket: "think-plus-5cc5c.appspot.com",
-    messagingSenderId: "820529962286",
-    appId: "1:820529962286:web:2ce1cf40291ff00c6beebf",
-    measurementId: "G-0W2J9B6WEX"
+    apiKey: "AIzaSyAhAWvE2ukcYYvmvxOPtkwm9359JSyWuDo",
+    authDomain: "educationdesign-5bce6.firebaseapp.com",
+    projectId: "educationdesign-5bce6",
+    storageBucket: "educationdesign-5bce6.appspot.com",
+    messagingSenderId: "879790722904",
+    appId: "1:879790722904:web:d58bcb94a3b7f17e565f2d",
+    measurementId: "G-53V755QWJT"
 };
 client.initializeApp(firebaseConfig);
 admin.initializeApp({
